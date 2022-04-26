@@ -36,9 +36,13 @@ export default function Three() {
             </mesh>
             <mesh rotation={[(angleToRadians(270)), 0, 0]} >
                 <planeGeometry args={[7, 7]} />
-                <meshStandardMaterial color="#0fb4d9" />
+                {/* <meshStandardMaterial color="#0fb4d9" /> */}
+                <meshPhongMaterial color="#0fb4d9" />
             </mesh>
-            <ambientLight args={["#FFFFFF", 1]} />
+            <ambientLight args={["#FFFFFF", .25]} />
+            {/* <directionalLight args={["#FFFFFF", 1]} position={[-3, 1, 0]} /> */}
+            <spotLight args={["#FFFFFF", 1]} position={[-3, 1, 0]} />
+            {/* <spotLight args={["#FFFFFF", 1, 2, angleToRadians(30), .4]} position={[-3, 1, 0]} /> */}
         </>
     );
 }
