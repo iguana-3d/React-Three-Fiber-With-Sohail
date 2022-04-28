@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import React, { useEffect, useRef } from 'react';
 import { angleToRadians } from '../utils/angle';
 import * as THREE from 'three';
+import gsap from 'gsap';
 
 export default function Three() {
     const orbitControlsRef = useRef(null);
@@ -19,29 +20,62 @@ export default function Three() {
 
     useEffect(() => {
         orbitControlsRef.current && console.log(orbitControlsRef.current)
-        console.log(orbitControlsRef.current)
-    }, [orbitControlsRef.current])
+        // console.log(orbitControlsRef.current)
+    }, [orbitControlsRef.current]);
 
+    const ballRef = useRef(null);
+
+    useEffect(() => {
+        // ballRef.current && console.log(ballRef.current);
+        //x-axis motion
+        const timeline = gsap.timeline({ paused: true });
+
+        timeline.to(ballRef.current.position, {
+            x: 1,
+            duration: 2,
+            ease: 'power2.out'
+        });
+
+        //x-axis motion
+        timeline.to(ballRef.current.position, {
+            y: .5,
+            duration: 1.5,
+            ease: 'bounce.out'
+        }, '<');
+
+        timeline.play();
+        
+    }, [ballRef.current])
     return (
         <>
+            {/* CAMERA */}
             <PerspectiveCamera makeDefault position={[0, 1, 5]} />
             <OrbitControls
                 ref={orbitControlsRef}
                 minPolarAngle={angleToRadians(60)}
                 maxPolarAngle={angleToRadians(80)}
             />
-            <mesh position={[0, .5, 0]} castShadow>
+
+            {/* BALL */}
+            <mesh position={[-2, 2.5, 0]} castShadow ref={ballRef}>
                 <sphereGeometry args={[.5, 32, 32]} />
                 <meshStandardMaterial color="#ffffff" metalness={.6} roughness={.2} />
             </mesh>
+
+            {/* FLOOR */}
             <mesh rotation={[(angleToRadians(270)), 0, 0]} receiveShadow >
                 <planeGeometry args={[20, 20]} />
                 <meshStandardMaterial color="#1ea3d8" />
             </mesh>
+
+            {/* AMBIENT LIGHT */}
             <ambientLight args={["#FFFFFF", .25]} />
             {/* <directionalLight args={["#FFFFFF", 1]} position={[-3, 1, 0]} /> */}
             {/* <spotLight args={["#FFFFFF", 1]} position={[-3, 1, 0]} /> */}
+
+            {/* SPOT LIGHT */}
             <spotLight args={["#FFFFFF", 1.5, 7, angleToRadians(45), .4]} position={[-3, 1, 0]} castShadow />
+            {/* ENVIROMENT */}
 
             <Environment background>
                 <mesh>
