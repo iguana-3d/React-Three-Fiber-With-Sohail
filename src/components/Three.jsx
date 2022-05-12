@@ -1,11 +1,13 @@
-import { Environment, OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import { Environment, OrbitControls, PerspectiveCamera, useTexture } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import React, { useEffect, useRef } from 'react';
 import { angleToRadians } from '../utils/angle';
 import * as THREE from 'three';
 import gsap from 'gsap';
+import Car from './Car';
 
 export default function Three() {
+
     const orbitControlsRef = useRef(null);
 
     useFrame((state) => {
@@ -39,12 +41,28 @@ export default function Three() {
         //x-axis motion
         timeline.to(ballRef.current.position, {
             y: .5,
-            duration: 1.5,
+            duration: 1,
             ease: 'bounce.out'
         }, '<');
 
+        // const coefficient = .8;
+        // for (let i = 1; i <= 4; i++) {
+
+        //     timeline.to(ballRef.current.position, {
+        //         y: Math.pow(coefficient, i) * 1.5,
+        //         duration: .2,
+        //         ease: 'power2.out'
+        //     }, '>');
+
+        //     timeline.to(ballRef.current.position, {
+        //         y: .5,
+        //         duration: .2,
+        //         ease: 'power2.in'
+        //     }, '>');
+        // }
+
         timeline.play();
-        
+
     }, [ballRef.current])
     return (
         <>
@@ -57,10 +75,13 @@ export default function Three() {
             />
 
             {/* BALL */}
-            <mesh position={[-2, 2.5, 0]} castShadow ref={ballRef}>
+            <mesh position={[-2, 1.5, 0]} castShadow ref={ballRef}>
                 <sphereGeometry args={[.5, 32, 32]} />
                 <meshStandardMaterial color="#ffffff" metalness={.6} roughness={.2} />
             </mesh>
+
+            {/* Car */}
+            {/* <Car /> */}
 
             {/* FLOOR */}
             <mesh rotation={[(angleToRadians(270)), 0, 0]} receiveShadow >
@@ -80,7 +101,7 @@ export default function Three() {
             <Environment background>
                 <mesh>
                     <sphereGeometry args={[50, 100, 100]} />
-                    <meshBasicMaterial color="#2266cc" side={THREE.BackSide} />
+                    <meshBasicMaterial color="#1ce39d" side={THREE.BackSide} />
                 </mesh>
             </Environment>
         </>
